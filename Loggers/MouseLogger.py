@@ -1,21 +1,4 @@
-from LoggerCore import *
-from collections import namedtuple
-
-
-class MouseCodes:
-    MOVE = 0x200
-    LMB_DOWN = 0x201
-    LMB_UP = 0x202
-    RMB_DOWN = 0x204
-    RMB_UP = 0x205
-    WHEEL_DOWN = 0x207
-    WHEEL_UP = 0x208
-    WHEEL = 0x20A
-    MOUSE_BUTTON_DOWN = 0x20B
-    MOUSE_BUTTON_UP = 0x20C
-
-
-MouseEvent = namedtuple("MouseEvents", ["Button", "Window"])  # window title
+from Loggers import *
 
 
 class MouseLogger(Logger):

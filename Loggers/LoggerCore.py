@@ -1,14 +1,7 @@
 import abc
 import atexit
 import datetime
-from enum import Enum
-
 from misc.utils import *
-
-
-class LoggerEnum(Enum):
-    KEYBOARD = 13
-    MOUSE = 14
 
 
 class Logger(abc.ABC):
