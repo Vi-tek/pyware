@@ -1,9 +1,9 @@
 import abc
-from enum import Enum
-from misc.utils import *
-
-import datetime
 import atexit
+import datetime
+from enum import Enum
+
+from misc.utils import *
 
 
 class LoggerEnum(Enum):

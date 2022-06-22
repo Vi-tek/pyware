@@ -27,4 +27,4 @@ class MouseLogger(Logger):
         if wParam == self.quit_input:
             self.stop_listener()
 
-        self.handler(MouseEvent(wParam))
+        self.handler(MouseEvent(wParam, ...))
