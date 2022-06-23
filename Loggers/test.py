@@ -5,7 +5,6 @@ if __name__ == '__main__':
     def test(*args):
         print(args)
 
-
     with MouseLogger(handler=test) as logger:
         logger.start_listener()
 

@@ -1,7 +1,6 @@
 from collections import namedtuple
 from enum import Enum
-from .LoggerCore import *
-
+from LoggerCore import *
 
 
 class LoggerEnum(Enum):

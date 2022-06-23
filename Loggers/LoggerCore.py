@@ -1,7 +1,7 @@
 import abc
 import atexit
 import datetime
-from misc.utils import *
+from Miscellaneous import *
 
 
 class Logger(abc.ABC):
@@ -41,9 +41,12 @@ class Logger(abc.ABC):
         ...
 
     def _hookProc(self, nCode, wParam, lParam):
-        self._process_body(nCode, wParam, lParam)
+        try:
+            self._process_body(nCode, wParam, lParam)
 
-        return user32.CallNextHookEx(self.hooked, nCode, wParam, lParam)
+            return user32.CallNextHookEx(self.hooked, nCode, wParam, lParam)
+        except KeyboardInterrupt:
+            self.stop_listener()
 
     @staticmethod
     def _current_time():
@@ -54,8 +57,8 @@ class Logger(abc.ABC):
         CMPFUNC = CFUNCTYPE(c_int, c_int, c_int, POINTER(c_void_p))
         return CMPFUNC(callback_)
 
-    @staticmethod
-    def stop_listener():
+    def stop_listener(self):
+        self._uninstallHookProc()
         process_id = kernel32.GetCurrentProcessId()
         handle = kernel32.OpenProcess(1, False, process_id)
         kernel32.TerminateProcess(handle, -1)
