@@ -2,6 +2,7 @@ import abc
 import atexit
 import datetime
 from Miscellaneous import *
+from Managers.WindowManager import WindowManager
 
 
 class Logger(abc.ABC):
@@ -10,6 +11,7 @@ class Logger(abc.ABC):
         self.hooked = None
         self.pointer = self._callback(self._hookProc)
         self.quit_input = quit_input
+        self._wm = WindowManager()
 
     def __enter__(self):
         return self
@@ -41,16 +43,15 @@ class Logger(abc.ABC):
         ...
 
     def _hookProc(self, nCode, wParam, lParam):
-        try:
-            self._process_body(nCode, wParam, lParam)
-
-            return user32.CallNextHookEx(self.hooked, nCode, wParam, lParam)
-        except KeyboardInterrupt:
-            self.stop_listener()
+        self._process_body(nCode, wParam, lParam)
+        return user32.CallNextHookEx(self.hooked, nCode, wParam, lParam)
 
     @staticmethod
     def _current_time():
         return int(datetime.datetime.now().timestamp())
+
+    def _get_active_window_title(self):
+        return self._wm.get_active_window().title
 
     @staticmethod
     def _callback(callback_):
@@ -69,3 +70,5 @@ class Logger(abc.ABC):
         self._installHookProc()
         msg = MSG()
         user32.GetMessageA(byref(msg), 0, 0, 0)
+        user32.TranslateMessage(byref(msg))
+        user32.DispatchMessageA(byref(msg))

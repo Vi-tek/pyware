@@ -219,4 +219,4 @@ class KeyboardCodes:
 KeyboardEvent = namedtuple("KeyboardEvent",
                            ["key", "scan_code", "alt_pressed", "shift_pressed", "time", "keyboard_layout", "window"])
 
-MouseEvent = namedtuple("MouseEvents", ["Button", "Window"])  # window title
+MouseEvent = namedtuple("MouseEvent", ["button", "position", "window"])  # window title

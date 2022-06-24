@@ -9,5 +9,8 @@ class MouseLogger(Logger):
     def _process_body(self, nCode, wParam, lParam):
         if wParam == self.quit_input:
             self.stop_listener()
-
-        self.handler(MouseEvent(wParam, ...))
+        self.handler(
+            MouseEvent(wParam,  # mouse button
+                       Vector2(GET_X_LPARAM(lParam[0]), lParam[0] >> 32),  # mouse position
+                       self._get_active_window_title())  # active window title
+        )
