@@ -7,8 +7,8 @@ class KeyboardLogger(Logger):
 
     def __init__(self, handler: any, quit_key: int = None):
         super(KeyboardLogger, self).__init__(LoggerEnum.KEYBOARD.value, quit_key)
-        self.handler = handler
-        self.shift_pressed = False
+        self._handler = handler
+        self._shift_pressed = False
 
     @staticmethod
     def convert_key(key: int):
@@ -22,14 +22,14 @@ class KeyboardLogger(Logger):
 
         if self.EVENTS[wParam] == "key down":
             if key == KeyboardCodes.LSHIFT or key == KeyboardCodes.RSHIFT:
-                self.shift_pressed = True
-            if self.handler:
-                self.handler(
+                self._shift_pressed = True
+            if self._handler:
+                self._handler(
                     KeyboardEvent(
                         key,  # key code
                         lParam[1],  # scan code
                         wParam == 260,  # is alt pressed
-                        self.shift_pressed,  # is shift pressed
+                        self._shift_pressed,  # is shift pressed
                         self._current_time(),  # current datetime
                         self.LAYOUT,  # keyboard layout
                         self._get_active_window_title()  # window title
@@ -38,4 +38,4 @@ class KeyboardLogger(Logger):
         else:
             if self.convert_key(lParam[0]) == KeyboardCodes.LSHIFT or self.convert_key(
                     lParam[0]) == KeyboardCodes.RSHIFT:
-                self.shift_pressed = False
+                self._shift_pressed = False
