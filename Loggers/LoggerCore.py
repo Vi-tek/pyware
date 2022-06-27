@@ -7,10 +7,10 @@ from Managers.WindowManager import WindowManager
 
 class Logger(abc.ABC):
     def __init__(self, logger_type: int, quit_input: int):
-        self.logger_type = logger_type
-        self.hooked = None
-        self.pointer = self._callback(self._hookProc)
-        self.quit_input = quit_input
+        self._logger_type = logger_type
+        self._hooked = None
+        self._pointer = self._callback(self._hookProc)
+        self._quit_input = quit_input
         self._wm = WindowManager()
 
     def __enter__(self):
@@ -21,22 +21,22 @@ class Logger(abc.ABC):
         return True
 
     def _installHookProc(self):
-        self.hooked = user32.SetWindowsHookExA(
-            self.logger_type,
-            self.pointer,
+        self._hooked = user32.SetWindowsHookExA(
+            self._logger_type,
+            self._pointer,
             kernel32.GetModuleHandleW(None),
             0
         )
 
-        if not self.hooked:
+        if not self._hooked:
             return False
         return True
 
     def _uninstallHookProc(self):
-        if self.hooked is None:
+        if self._hooked is None:
             return
-        user32.UnhookWindowsHookEx(self.hooked)
-        self.hooked = None
+        user32.UnhookWindowsHookEx(self._hooked)
+        self._hooked = None
 
     @abc.abstractmethod
     def _process_body(self, nCode, wParam, lParam):
@@ -44,7 +44,7 @@ class Logger(abc.ABC):
 
     def _hookProc(self, nCode, wParam, lParam):
         self._process_body(nCode, wParam, lParam)
-        return user32.CallNextHookEx(self.hooked, nCode, wParam, lParam)
+        return user32.CallNextHookEx(self._hooked, nCode, wParam, lParam)
 
     @staticmethod
     def _current_time():

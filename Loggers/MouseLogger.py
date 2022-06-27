@@ -7,7 +7,7 @@ class MouseLogger(Logger):
         self.handler = handler
 
     def _process_body(self, nCode, wParam, lParam):
-        if wParam == self.quit_input:
+        if wParam == self._quit_input:
             self.stop_listener()
         self.handler(
             MouseEvent(wParam,  # mouse button

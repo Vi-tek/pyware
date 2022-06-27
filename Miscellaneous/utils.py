@@ -11,10 +11,6 @@ class RECT(Structure):
                 ("bottom", LONG)]
 
 
-class POINT(Structure):
-    _fields_ = ("x", c_int), ("y", c_int)
-
-
 user32 = windll.user32
 kernel32 = windll.kernel32
 

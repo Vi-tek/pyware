@@ -17,7 +17,7 @@ class KeyboardLogger(Logger):
     def _process_body(self, nCode, wParam, lParam):
         key = self.convert_key(lParam[0])
 
-        if key == self.quit_input:
+        if key == self._quit_input:
             self.stop_listener()
 
         if self.EVENTS[wParam] == "key down":
